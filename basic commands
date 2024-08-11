@@ -1,0 +1,143 @@
+Lets create following...
+Mount Point: /d01 (ownership to nmgr)
+Group: admin
+User: nmgr/nmgr (System Node Manager) with sudo
+      dbsys/dbsys (Database System Owner)
+      appsys/appsys (Application System Owner)
+
+
+mkdir -p /d01/
+groupadd admin
+sudo useradd -m -d /home/nmgr -s /bin/bash nmgr
+passwd nmgr
+sudo useradd -m -d /home/dbsys -s /bin/bash dbsys
+passwd dbsys
+sudo useradd -m -d /home/appsys -s /bin/bash appsys
+passwd appsys
+
+To check disk space:
+
+sudo fdisk -l
+lsblk #List Block
+
+Steps to Add nmgr to the sudo Group:
+
+sudo usermod -aG sudo nmgr
+
+To verify sudo permission:
+
+$ su - nmgr
+Password:
+$ sudo whoami
+[sudo] password for nmgr:
+root
+
+Or
+root@insights:~# groups nmgr
+nmgr : nmgr sudo
+
+Or
+sudo -l -U nmgr
+User pradeep may run the following commands on this host: (ALL : ALL) ALL
+
+To create home directory for nmgr user:
+
+
+# Create the home directory
+sudo mkdir -p /home/nmgr
+
+# Change the ownership of the home directory to nmgr
+sudo chown nmgr:nmgr /home/nmgr
+
+# Copy default configuration files to the new home directory
+sudo cp -r /etc/skel/. /home/nmgr/
+
+# Update the user's home directory in /etc/passwd
+sudo usermod -d /home/nmgr nmgr
+
+
+To verify creation of home directory for nmgr user:
+
+# Verify the current home directory entry in /etc/passwd
+grep nmgr /etc/passwd
+
+# Check the home directory existence and permissions
+ls -ld /home/nmgr
+
+# Check the contents of the home directory
+ls -la /home/nmgr
+
+To change Bash Shell of nmgr user:
+
+sudo chsh -s /bin/bash nmgr
+
+To verify change of Bash Shell of nmgr user:
+
+grep '^nmgr' /etc/passwd
+
+
+When I failed to ping google.com:
+
+sudo nano /etc/netplan/50-cloud-init.yaml
+
+network:
+    ethernets:
+        ens160:
+            addresses:
+            - 10.12.12.130/24
+            nameservers:
+                addresses:
+                - 8.8.8.8
+                - 8.8.4.4
+            routes:
+            -   to: default
+                via: 10.12.12.1
+    version: 2
+
+sudo netplan apply
+sudo systemctl restart systemd-resolved
+resolvectl status
+ping google.com
+
+Create Users and add password
+passwd opc
+useradd def
+passwd def
+useradd dbs
+passwd dbs
+useradd app
+passwd app
+useradd web
+passwd web
+
+Create Group admin and add above users to the admin group
+groupadd admin
+usermod -aG admin def
+useradd -aG admin dbs
+usermod -aG admin app
+usermod -aG admin web
+
+Provide wheel permission:
+
+
+usermod -aG wheel opc
+usermod -aG wheel def
+usermod -aG wheel dbs
+usermod -aG wheel app
+usermod -aG wheel web
+
+mkdir -p /d01
+mkdir -p /d01/def
+mkdir -p /d01/def/data
+mkdir -p /d01/def/app
+mkdir -p /d01/def/web
+chown def:def /d01/def
+chown dbs:dbs /d01/def/data
+chown app:app /d01/def/app
+chown web:web /d01/def/web
+chmod 774 /d01/def
+chmod 774 /d01/def/data
+chmod 774 /d01/def/app
+chmod 774 /d01/def/web
+nano ~/.bashrc
+source ~/.bashrc
