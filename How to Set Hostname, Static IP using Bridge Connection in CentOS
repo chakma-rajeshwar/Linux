@@ -1,0 +1,93 @@
+To set HOSTNAME use the following command:
+
+vi /etc/hosts
+
+192.168.0.147 loadbalancer  loadbalancer.com
+192.168.0.148 backendserver1 backendserver1.com
+192.168.0.149 backendserver2  backendserver2.com
+
+To set Static IP using Bridge Connection:
+
+
+To install net-tools:
+
+sudo yum install net-tools
+
+
+Before going to set Static IP, select Bridge Connection
+
+
+To configure Network configuration file
+
+vi /etc/sysconfig/network-scripts/ifcfg-ens33
+
+TYPE=Ethernet
+PROXY_METHOD=none
+BROWSER_ONLY=no
+BOOTPROTO=none
+DEFROUTE=yes
+IPV4_FAILURE_FATAL=no
+IPV6INIT=yes
+IPV6_AUTOCONF=yes
+IPV6_DEFROUTE=yes
+IPV6_FAILURE_FATAL=no
+IPV6_ADDR_GEN_MODE=stable-privacy
+NAME=ens33
+IPADDR=192.168.0.147  # Your desired static IP address
+NETMASK=255.255.255.0   # Subnet mask
+GATEWAY=192.168.0.1   # Gateway IP address
+DNS1=8.8.8.8            # Primary DNS server
+DNS2=4.4.4.4            # Secondary DNS server
+UUID=your-uuid          # UUID of the interface (optional)
+DEVICE=ens33
+ONBOOT=yes
+PREFIX=24
+
+Note: If someone want to use DHCP connection then BOOTPROTO must be dhcp
+GATEWAY IP address is router IP address. IP Address must be similar format with Gateway and Netmask indicates IP Class
+
+Troubleshooting:
+To check active internet connectivity: ping google.com
+Verify DNS settings:
+cat /etc/resolv.conf
+If there is need to edit the configuration file, then
+vi /etc/resolv.conf
+Restart Network Services: systemctl restart network
+Flush DNS cache: systemctl restart systemd-resolved
+Verify HOST resolution:
+nslookup mirrors.fedoraproject.org
+ping mirrors.fedoraproject.org
+Restart Nework Manager: systemctl restart NetworkManager
+Network configuration also perform by using:
+nmtui
+Then, edit connectivit, active/deactive/delete a connection from the GUI
+
+Tutorials:
+
+How to configure a static IP address on CentOS 7 / RHEL 7
+
+How to set up a Static IP for a Virtual Machine (CentOS)
+
+On CentOS, you can install and use OpenSSH-server to enable SSH connections to your VM. The OpenSSH server provides the necessary functionality to allow remote access via SSH. To install and enable SSH on CentOS, follow these steps:
+1. Install OpenSSH Server:
+Run the following command in your terminal to install the OpenSSH server:
+
+
+sudo yum install openssh-server
+
+
+2. Start and Enable SSH Service:
+After the installation, start the SSH service and enable it to start automatically on system boot:
+sudo systemctl start sshd
+sudo systemctl enable sshd
+
+
+3. Firewall Configuration:
+If the firewall is enabled on your CentOS VM, you might need to allow SSH traffic through the firewall. Use the following command to allow SSH connections:
+
+
+sudo firewall-cmd --permanent --add-service=ssh
+sudo firewall-cmd --reload
+
+
+
