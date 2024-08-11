@@ -1,0 +1,63 @@
+
+Node.js installation
+Step-1:
+ [root@datafluent-instance-1 opc]# 
+ curl -fsSL https://rpm.nodesource.com/setup_lts.x | bash - #for RedHat Linuxt
+
+
+ curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash - #for Ubuntu Linux
+Step-2: [root@datafluent-instance-1 opc]# sudo apt clean all
+Step-3: [root@datafluent-instance-1 opc]# apt install -y nodejs
+Step-4: Check Node.js version:   
+ [root@datafluent-instance-1 opc]# node --version
+Check npm version:
+ [root@datafluent-instance-1 opc]# npm --version
+Step-5: [root@datafluent-instance-1 opc]# npm install yarn -g
+Step-6: Check yarn version:
+ [root@datafluent-instance-1 opc]# yarn --version
+Step-7:[root@datafluent-instance-1 opc]# npm install pm2@latest -g
+Step-8: Check pm2 version
+ [root@datafluent-instance-1 opc]# pm2 --version
+Step-9: To Run and Backend (Express) app
+  sudo npm install
+
+First visit package.json to read scripts:
+  "scripts": {
+    "start": "node server.js",
+    "server": "nodemon server.js"
+
+ npm run server/index/app/any-name.js #To test the server
+ pm2 start file-name.js
+Setp-10: To run Frontend (React) app
+ sudo npm install
+ sudo npm run build
+ sudo npm install -g serve
+ pm2 serve ./dist 3000 --name "web-app" --spa
+ pm2 list
+ pm2 restart web-app
+ pm2 stop
+Step-11: To test Backend (Express) server -
+ 
+
+
+
+Step-12: To check log files
+ pm2 log 0/1/2(ID)
+
+Now check pm2 log using their id: pm2 log 1, pm2 log 2
+
+
+
+
+Deploy React and NodeJS on Linux
+Deploying a React Application with Nginx on Ubuntu
+Deploy YOUR React App on VPS Server with Nginx from scratch
+
+https://www.ssdnodes.com/blog/category/devops/
+
+https://github.com/nvm-sh/nvm
+https://github.com/WillButton/react-berry-dashboard
+https://github.com/rekibnikufesin/api-server-nodejs
+https://pm2.keymetrics.io/docs/usage/quick-start/
+
+
