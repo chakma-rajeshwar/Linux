@@ -3,8 +3,6 @@ Node.js installation
 Step-1:
  [root@datafluent-instance-1 opc]# 
  curl -fsSL https://rpm.nodesource.com/setup_lts.x | bash - #for RedHat Linuxt
-
-
  curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash - #for Ubuntu Linux
 Step-2: [root@datafluent-instance-1 opc]# sudo apt clean all
 Step-3: [root@datafluent-instance-1 opc]# apt install -y nodejs
